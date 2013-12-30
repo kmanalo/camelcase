@@ -1,8 +1,6 @@
 #include <iostream>
-#include <iterator>
 #include <string>
-#include <regex>
-#include <boost/xpressive/regex_algoirthms.hpp>
+#include <boost/regex.hpp>
  
 int main()
 {
@@ -10,16 +8,17 @@ int main()
         "\"I know, I'll use regular expressions.\" "
         "Now they have two problems.";
  
-    std::regex self_regex("REGULAR EXPRESSIONS",
-            std::regex_constants::ECMAScript | std::regex_constants::icase);
-    if (std::regex_search(s, self_regex)) {
+    boost::regex self_regex("REGULAR EXPRESSIONS",
+        boost::regex_constants::ECMAScript | 
+        boost::regex_constants::icase);
+    if (boost::regex_search(s, self_regex)) {
         std::cout << "Text contains the phrase 'regular expressions'\n";
     }
  
-    std::regex word_regex("(\\S+)");
+    boost::regex word_regex("(\\S+)");
     auto words_begin = 
-        std::sregex_iterator(s.begin(), s.end(), word_regex);
-    auto words_end = std::sregex_iterator();
+        boost::sregex_iterator(s.begin(), s.end(), word_regex);
+    auto words_end = boost::sregex_iterator();
  
     std::cout << "Found "
         << std::distance(words_begin, words_end)
@@ -27,15 +26,15 @@ int main()
  
     const int N = 6;
     std::cout << "Words greater than " << N << " characters:\n";
-    for (std::sregex_iterator i = words_begin; i != words_end; ++i) {
-        std::smatch match = *i;
+    for (boost::sregex_iterator i = words_begin; i != words_end; ++i) {
+        boost::smatch match = *i;
         std::string match_str = match.str();
         if (match_str.size() > N) {
             std::cout << "  " << match_str << '\n';
         }
     }
  
-    std::regex long_word_regex("(\\w{7,})");
-    std::string new_s = std::regex_replace(s, long_word_regex, "[$&]");
+    boost::regex long_word_regex("(\\w{7,})");
+    std::string new_s = boost::regex_replace(s, long_word_regex, "[$&]");
     std::cout << new_s << '\n';
 }
